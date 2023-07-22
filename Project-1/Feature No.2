@@ -1,0 +1,26 @@
+#include <Arduino.h>
+
+const int LED_PIN = LED_BUILTIN; //تنظیم پین LED_BUILTIN به عنوان خروجی
+const int BAUD_RATE = 9600;// شروع ارتباط سریال با سرعت 9600 بیت در ثانیه
+
+void setup() {
+  pinMode(LED_PIN, OUTPUT);
+  Serial.begin(BAUD_RATE);
+}
+
+void loop() {
+  if (Serial.available()) { //  بررسی وجود داده در پورت سریال
+    String command = Serial.readStringUntil('\n'); // خواندن دستور از پورت سریال تا رسیدن به کاراکترجداکننده
+    command.trim();
+
+    if (command == "SET_ON") { // اگر دستور SET_ON بود
+      digitalWrite(LED_PIN, HIGH); // روشن کردن LED
+    } else if (command == "SET_OFF") { // اگر دستور SET_OFF بود
+      digitalWrite(LED_PIN, LOW); // خاموش کردن LED
+    }
+  }
+
+  Serial.println("Good Time"); // ارسال "Good Time" به مانیتور سریال
+  delay(1000);
+
+}
