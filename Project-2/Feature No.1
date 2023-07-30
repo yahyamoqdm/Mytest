@@ -1,0 +1,35 @@
+#include<Arduino.h>
+void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+  if (Serial.available() > 0) {
+    String input = Serial.readStringUntil('\n'); // خواندن دستور از ورودی سریال تا رسیدن به کاراکتر جداکننده (\n)
+
+    if (input.startsWith("MUL ")) { // بررسی اینکه دستور با "MUL " شروع می‌شود
+      input.remove(0, 4); // حذف قسمت "MUL " از ورودی
+
+      // جدا کردن دو عدد از یکدیگر
+      int spaceIndex = input.indexOf(' ');
+      if (spaceIndex != -1) {
+        String strA = input.substring(0, spaceIndex);
+        String strB = input.substring(spaceIndex + 1);
+
+        // تبدیل رشته‌های حاوی عدد به اعداد صحیح
+        int a = strA.toInt();
+        int b = strB.toInt();
+
+        // محاسبه حاصلضرب
+        int result = a * b;
+
+        // چاپ نتیجه در خروجی سریال
+        Serial.println(result);
+      } else {
+        Serial.println("Invalid input format. Please use 'MUL A B' format.");
+      }
+    } else {
+      Serial.println("Invalid command. Please use 'MUL A B' format.");
+    }
+  }
+}
