@@ -1,0 +1,38 @@
+#include <Arduino.h>
+import math
+
+def dot_product(v1, v2):
+    return v1[0] * v2[0] + v1[1] * v2[1]
+
+def magnitude(vector):
+    return math.sqrt(vector[0] ** 2 + vector[1] ** 2)
+
+def angle_between_vectors(v1, v2):
+    dot_prod = dot_product(v1, v2)
+    mag_v1 = magnitude(v1)
+    mag_v2 = magnitude(v2)
+
+    if mag_v1 == 0 or mag_v2 == 0:
+        raise ValueError("One of the vectors has zero magnitude. Angle cannot be calculated.")
+
+    cos_theta = dot_prod / (mag_v1 * mag_v2)
+    angle_rad = math.acos(cos_theta)
+    angle_deg = math.degrees(angle_rad)
+    return angle_deg
+
+def main():
+    try:
+        input_str = input("Enter two 2-D vectors in the format (V1x,V1y) (V2x,V2y) like (1,2) (3,4): ")
+        v1_str, v2_str = input_str.split()
+        v1 = tuple(map(int, v1_str.strip('()').split(',')))
+        v2 = tuple(map(int, v2_str.strip('()').split(',')))
+
+        angle = angle_between_vectors(v1, v2)
+        print(f"The angle between vectors {v1} and {v2} is: {angle:.2f} degrees")
+    except ValueError as e:
+        print(str(e))
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+if __name__ == "__main__":
+    main()
